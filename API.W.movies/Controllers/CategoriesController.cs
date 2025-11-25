@@ -37,7 +37,28 @@ namespace API.W.movies.Controllers
             var categoryDto = await _categoryService.GetCategoryAsync(id);
             return Ok(categoryDto);
         }
+        [HttpPost(Name = "createCategoryAsync")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
 
+        public async Task<ActionResult<CategoryDto>> CreateCategoryAsync([FromBody] CategoryCreateDto categoryCreateDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            try
+            {
+               var createdCategory = await _categoryService.CreateCategoryAsync(categoryCreateDto);
+                return CreatedAtRoute("GetCategoryAsync", new { id = createdCategory.Id }, createdCategory);
 
-    }
-}
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+    }  } 
