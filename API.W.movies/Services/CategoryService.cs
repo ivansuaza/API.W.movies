@@ -41,5 +41,35 @@ namespace API.W.movies.Services
             return _mapper.Map<CategoryDto>(category);
         }
 
+        public Task<bool> CreateCategoryAsync(Category category)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> DeleteCategoryAsync(int Id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<ICollection<CategoryDto>> GetCategoriesAsync()
+        {
+            var categories =  _categoryRepository.GetCategoriesAsync();
+            return  _mapper.Map<ICollection<CategoryDto>>(categories);
+        }
+
+        public Task<CategoryDto> GetCategoryAsync(int Id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> GetCategoryExistsByNameAsync(string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> UpdateCategoryAsync(Category category)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
