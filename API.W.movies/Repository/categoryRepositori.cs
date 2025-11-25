@@ -77,6 +77,15 @@ namespace API.W.movies.Repository
 
         }
 
+        Task<ICollection<CategoryDto>> ICategoryRepositori.GetCategoriesAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<CategoryDto> ICategoryRepositori.GetCategoryAsync(int Id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
    
