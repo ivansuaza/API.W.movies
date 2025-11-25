@@ -72,5 +72,10 @@ namespace API.W.movies.Services
         {
             throw new NotImplementedException();
         }
+
+        public Task<CategoryDto> UpdateCategoryAsync(int id, Category categoryDto)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
