@@ -1,4 +1,5 @@
 ﻿using API.W.movies.DATA.Models;
+using API.W.movies.DATA.Models.Dtos;
 
 namespace API.W.movies.Services.IServices
 {
@@ -11,5 +12,7 @@ namespace API.W.movies.Services.IServices
         Task<bool> CreateCategoryAsync(Category category); //me crea una categoria  
         Task<bool> UpdateCategoryAsync(Category category); //me actualiza una categoria 
         Task<bool> DeleteCategoryAsync(int Id);
+        Task CreateCategoriAsync(CategoryCreateDto categoryCreateDto);
+        Task CreateCategoriAsync(CategoryCreateDto categoryCreateDto);
     }
 }

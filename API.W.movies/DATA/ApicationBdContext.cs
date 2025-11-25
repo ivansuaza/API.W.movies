@@ -6,7 +6,7 @@ namespace API.W.movies.DATA
 {
     public class ApicationBdContext : DbContext
     {
-        public ApicationBdContext(DbContextOptions<ApicationBdContext>options):base(options)
+        public ApicationBdContext(DbContextOptions<ApicationBdContext> options) : base(options)
         {
             
         }
