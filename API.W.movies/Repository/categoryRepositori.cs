@@ -77,6 +77,11 @@ namespace API.W.movies.Repository
 
         }
 
+        public Task<bool> UpdateCategoryAsync(CategoryDto categoryExists)
+        {
+            throw new NotImplementedException();
+        }
+
         Task<ICollection<CategoryDto>> ICategoryRepositori.GetCategoriesAsync()
         {
             throw new NotImplementedException();
