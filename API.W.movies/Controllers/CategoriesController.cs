@@ -34,9 +34,20 @@ namespace API.W.movies.Controllers
 
         public async Task<ActionResult<CategoryDto>> GetCategoryAsync(int id)
         {
-            var categoryDto = await _categoryService.GetCategoryAsync(id);
-            return Ok(categoryDto);
+            try
+            {
+                var categoryDto = await _categoryService.GetCategoryAsync(id);
+                return Ok(categoryDto);
+            }
+            catch (InvalidOperationException ex) when (ex.Message.Contains(" no se encontro"))
+            {
+                return NotFound(new { ex.Message });
+            }
+         
         }
+
+
+
         [HttpPost(Name = "createCategoryAsync")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -96,6 +107,32 @@ namespace API.W.movies.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
+        }
+        [HttpDelete("{id:int}", Name = "DeleteCategoryAsync")]        
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+
+        public async Task<ActionResult> DeleteCategoryAsync(int id)
+        {
+           
+            try
+            {
+                var deletedCategory = await _categoryService.DeleteCategoryAsync(id);
+                return Ok(deletedCategory);
+
+            }
+          
+            catch (InvalidOperationException ex) when (ex.Message.Contains(" no se encontro"))
+            {
+                return NotFound(new { ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+
         }
     } 
 } 

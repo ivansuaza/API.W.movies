@@ -19,11 +19,7 @@ namespace API.W.movies.Services
         {
             throw new NotImplementedException();
         }
-
-        public Task CreateCategoriAsync(CategoryCreateUpdateDto categoryCreateDto)
-        {
-            throw new NotImplementedException();
-        }
+      
 
         public async Task<CategoryDto> CreateCategoryAsync(CategoryCreateUpdateDto categoryCreateDto)
         {
@@ -39,16 +35,21 @@ namespace API.W.movies.Services
                 throw new Exception("Error al crear la categoria");
             }
             return _mapper.Map<CategoryDto>(category);
-        }
+        }  
 
-        public Task<bool> CreateCategoryAsync(Category category)
+        public async Task<bool> DeleteCategoryAsync(int Id)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> DeleteCategoryAsync(int Id)
-        {
-            throw new NotImplementedException();
+          var categoryExists = await _categoryRepository.GetCategoryAsync(Id);
+            if (categoryExists == null)
+            {
+                throw new InvalidOperationException($"No se encontro la categoria con ID: '{Id}'");
+            }
+            var categoryDeleted = await _categoryRepository.DeleteCategoryAsync(Id);
+            if (!categoryDeleted)
+            {
+                throw new Exception("Error al eliminar la categoria");
+            }
+            return categoryDeleted;
         }
 
         public async Task<ICollection<CategoryDto>> GetCategoriesAsync()
@@ -60,6 +61,10 @@ namespace API.W.movies.Services
         public async Task<CategoryDto> GetCategoryAsync(int Id)
         {
             var category = await _categoryRepository.GetCategoryAsync(Id);
+            if (category == null)
+            {
+                throw new InvalidOperationException($"No se encontro la categoria con ID: '{Id}'");
+            }   
             return _mapper.Map<CategoryDto>(category);
         }
 
