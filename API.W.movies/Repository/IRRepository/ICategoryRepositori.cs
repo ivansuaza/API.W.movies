@@ -13,5 +13,6 @@ namespace API.W.movies.Repository.IRRepository
         Task<bool> CreateCategoryAsync(Category category); //me crea una categoria  
         Task<bool> UpdateCategoryAsync(Category category); //me actualiza una categoria 
         Task<bool> DeleteCategoryAsync(int Id);
+        Task<bool> UpdateCategoryAsync(CategoryDto categoryExists);
     }
 }

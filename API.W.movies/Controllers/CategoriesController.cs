@@ -44,7 +44,7 @@ namespace API.W.movies.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
 
-        public async Task<ActionResult<CategoryDto>> CreateCategoryAsync([FromBody] CategoryCreateDto categoryCreateDto)
+        public async Task<ActionResult<CategoryDto>> CreateCategoryAsync([FromBody] CategoryCreateUpdateDto categoryCreateDto)
         {
             if (!ModelState.IsValid)
             {
@@ -56,9 +56,46 @@ namespace API.W.movies.Controllers
                 return CreatedAtRoute("GetCategoryAsync", new { id = createdCategory.Id }, createdCategory);
 
             }
+            catch (InvalidOperationException ex)when (ex.Message.Contains(" ya exists"))
+            {
+                return Conflict(ex.Message);
+            }          
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
-    }  } 
+        [HttpPut("{id:int}", Name = "updateCategoryAsync")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+
+        public async Task<ActionResult<CategoryDto>> updateCategoryAsync([FromBody] CategoryCreateUpdateDto dto, int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                var updateCategory = await _categoryService.UpdateCategoryAsync(dto, id);
+                return Ok(updateCategory);
+
+            }
+            catch (InvalidOperationException ex) when (ex.Message.Contains(" ya exists"))
+            {
+                return Conflict(ex.Message);
+            }
+            catch (InvalidOperationException ex) when (ex.Message.Contains(" no se encontro"))
+            {
+                return NotFound(new { ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+    } 
+} 

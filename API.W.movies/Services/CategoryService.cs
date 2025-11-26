@@ -20,12 +20,12 @@ namespace API.W.movies.Services
             throw new NotImplementedException();
         }
 
-        public Task CreateCategoriAsync(CategoryCreateDto categoryCreateDto)
+        public Task CreateCategoriAsync(CategoryCreateUpdateDto categoryCreateDto)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<CategoryDto> CreateCategoryAsync(CategoryCreateDto categoryCreateDto)
+        public async Task<CategoryDto> CreateCategoryAsync(CategoryCreateUpdateDto categoryCreateDto)
         {
           var CayegoryExists = await _categoryRepository.GetCategoryExistsByNameAsync(categoryCreateDto.Name);
             if (CayegoryExists)
@@ -68,9 +68,34 @@ namespace API.W.movies.Services
             throw new NotImplementedException();
         }
 
-        public Task<bool> UpdateCategoryAsync(Category category)
+        public async Task<CategoryDto> UpdateCategoryAsync(CategoryCreateUpdateDto dto, int id)
         {
-            throw new NotImplementedException();
+            var CategoryExists = await _categoryRepository.GetCategoryAsync(id);
+            if (CategoryExists == null)
+            {
+                throw new InvalidOperationException($"No se encontro la categoria con ID: '{id}'");
+            }
+            var nameExists = await _categoryRepository.GetCategoryExistsByNameAsync(dto.Name);
+
+            if (nameExists) 
+            {
+                throw new InvalidOperationException($"ya existe una categoria con el nombre de.'{dto.Name}'");
+            } 
+            _mapper.Map(dto, CategoryExists);
+            var categoryUpdated = await _categoryRepository.UpdateCategoryAsync(CategoryExists);
+
+            if (!categoryUpdated)
+            {
+                throw new Exception("Error al actualizar la categoria");
+            }
+            return _mapper.Map<CategoryDto>(CategoryExists);
+
+
+
+
+
+
+
         }
 
         public Task<CategoryDto> UpdateCategoryAsync(int id, Category categoryDto)
